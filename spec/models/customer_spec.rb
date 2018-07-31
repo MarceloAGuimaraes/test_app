@@ -2,10 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Customer, type: :model do
 
-   fixtures :all
   it 'create a customer' do
-   customer = customers(:jackson)
-   expect(customer.full_name).to eq("Sr Jackson Pires")
+   customer = create(:customer, name: "jackson")
+   expect(customer.full_name).to match(/jackson/)
   
   end
 
@@ -39,6 +38,14 @@ RSpec.describe Customer, type: :model do
      attrr = attributes_for(:customer, :female)
      customer.gender = attrr[:gender]
      puts customer.gender
-    end
+  end
+
+  it 'travel_to' do 
+   travel_to Time.zone.local(2004, 11, 24, 01, 04 ,44) do
+     @customer = create(:customer)
+   end
+   
+   expect(@customer.created_at).to eq(Time.new(2004, 11, 24, 01, 04 ,44,0))
+  end
 
 end

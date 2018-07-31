@@ -16,7 +16,6 @@ require "sprockets/railtie"
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
-
 module TestApp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -31,6 +30,7 @@ module TestApp
     config.generators.system_tests = nil
 
     config.generators do |g|
+      g.time_zone = "Brasilia"
        g.test_framework :rspec,
           fixtures: false,
           view_specs: false,
