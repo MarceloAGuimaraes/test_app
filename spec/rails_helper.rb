@@ -27,7 +27,16 @@ require 'rspec/rails'
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
-  
+  # devise 
+  config.include Devise::Test::ControllerHelpers, :type => :controller
+  # add shoulda-matchers
+  Shoulda::Matchers.configure do |config|
+    config.integrate do |with|
+      with.test_framework :rspec
+      with.library :rails
+    end
+  end
+
   #FactoryBot
   config.include FactoryBot::Syntax::Methods
   
