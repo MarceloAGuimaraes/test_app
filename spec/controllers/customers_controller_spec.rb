@@ -33,5 +33,54 @@ RSpec.describe CustomersController, type: :controller do
       end
   end
 
+  context ' as logged member ' do
+    before do
+      @member = create(:member)
+      @customer = create(:customer)
+    end
+    it 'certificate that server responses are in json' do
+      customer_params = attributes_for(:customer)
+      
+      sign_in @member
+
+      post :create, params:{ customer: customer_params},
+      format: :json
+      
+      expect(response.content_type).to eq("application/json")
+      
+    end
+
+
+      it 'spec for flash_notices' do
+        customer_params = attributes_for(:customer)
+        sign_in @member 
+          
+        post :create, params: { customer: customer_params }
+          
+        expect(flash[:notice]).to match(/Customer was successfully created./)
+      end
+
+      it 'create with valid attributes ' do
+      customer_params = attributes_for(:customer)
+      sign_in @member
+      expect{
+         post :create, params: { customer: customer_params }
+      }.to change(Customer, :count).by(1)
+      end
+
+      it '200 status response' do
+      sign_in @member
+      get :show, params: { id: @customer.id}
+      expect(response).to have_http_status(200)
+      end
+     
+      it 'route spec' do
+        should { route(:get, '/customers').to(action: :index)}
+      end
+        
+      
+
+
+    end
 end
 
